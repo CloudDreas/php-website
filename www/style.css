@@ -1,0 +1,139 @@
+/* Canvas als achtergrond fixed */
+#matrix {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  display: block;
+}
+
+/* Gemeenschappelijke stijl voor navigatieknoppen */
+.navButton {
+  position: fixed;
+  top: 10px;
+  padding: 10px 16px;
+  background-color: #0ac23b;
+  color: white;
+  font-weight: bold;
+  font-family: monospace;
+  border-radius: 4px;
+  text-decoration: none;
+  cursor: pointer;
+  z-index: 20;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+/* Hover-effect */
+.navButton:hover {
+  background-color: #088d53;
+}
+
+/* Links en rechts van het horizontale midden, 35px afstand */
+.navButton:first-of-type {
+  left: calc(50% - 35px); /* 35px links van midden */
+  transform: translateX(0);
+}
+.navButton:nth-of-type(2) {
+  left: 50%; /* precies midden */
+  transform: translateX(-50%);
+}
+.navButton:last-of-type {
+  left: calc(50% + 35px); /* 35px rechts van midden */
+  transform: translateX(0);
+}
+
+/* Scrollende klok tekst die van rechts naar links schuift */
+#scrollingClock {
+  position: fixed;
+  top: 50%;
+  left: 100%;
+  white-space: nowrap;
+  font-size: 58px;
+  font-weight: bold;
+  color: rgb(9, 244, 44);
+  user-select: none;
+  pointer-events: none;
+  font-family: monospace;
+  transform: translateY(-50%);
+  animation-name: scrollLeft;
+  animation-duration: 10s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  z-index: 5;
+}
+
+@keyframes scrollLeft {
+  0% {
+    left: 100%;
+  }
+  100% {
+    left: -100%;
+  }
+}
+
+/* Algemene body en html */
+body {
+  margin: 0;
+  background-color: black;
+  overflow-y: auto;
+  color: #00f;
+  font-family: monospace;
+}
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: block;
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Footer */
+#footer {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: rgb(255, 255, 255) !important;
+  font-family: monospace;
+  font-size: 14px;
+  user-select: none;
+  justify-content: center;
+  width: 100%;
+}
+#footerText {
+  color: white !important;
+  user-select: none;
+}
+
+/* Visitor counter rechtsonder */
+#visitorCounter {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #00f;
+  font-family: monospace;
+  font-size: 1rem;
+  padding: 6px 12px;
+  border-radius: 6px;
+  z-index: 30;
+  user-select: none;
+  pointer-events: none;
+  white-space: nowrap;
+}
