@@ -1,0 +1,109 @@
+name: CI / CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: PHP lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: PHP - syntax check
+        run: |
+          set -euo pipefail
+          files=$(git ls-files '*.php')
+          if [ -z "${files}" ]; then
+            echo "No PHP files to lint"
+            exit 0
+          fi
+          echo "Checking PHP syntax for:"
+          echo "${files}"
+          # Run php -l on every file, fail the job on the first syntax error
+          printf '%s\n' ${files} | xargs -n1 php -l
+
+  compose-validate:
+    name: Validate docker-compose
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show docker-compose file
+        run: |
+          echo "--- docker-compose.yml ---"
+          sed -n '1,200p' docker-compose.yml || true
+
+      - name: Validate docker-compose
+        run: |
+          # Validate docker-compose syntax. This requires docker/compose on the runner.
+          docker compose -f docker-compose.yml config
+
+  build:
+    name: Optional build (CI smoke)
+    runs-on: ubuntu-latest
+    needs: compose-validate
+    if: github.event_name == 'push'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build images (no push)
+        run: |
+          # Builds images defined by docker-compose to validate they build successfully.
+          # This runs on the runner and does not push to any registry.
+          docker compose -f docker-compose.yml build --pull
+
+  deploy:
+    name: Deploy to remote server (optional)
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        if: secrets.DEPLOY_HOST && secrets.SSH_PRIVATE_KEY
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || '22' }}
+          script: |
+            # Adjust the commands below to match your remote host layout.
+            set -euo pipefail
+            echo "Deploy: change to deploy directory"
+            cd ${REMOTE_DIR:-/var/www/html} || exit 1
+            echo "Fetching latest"
+            git fetch --all
+            git reset --hard ${GITHUB_SHA}
+            echo "Pulling updated images and restarting (if using docker-compose)"
+            docker compose pull || true
+            docker compose up -d --build || true
+
+# Notes
+# - The deploy step is optional and only runs when the repository has the
+#   secrets `DEPLOY_HOST` and `SSH_PRIVATE_KEY` set in the repository settings.
+# - If you prefer Docker Hub/registry-based pushes, replace the `build` job
+#   with docker/login-action + docker/build-push-action and set DOCKERHUB_* secrets.
+# - Customize `REMOTE_DIR` on the remote host or set it as a repository secret.
