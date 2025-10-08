@@ -1,7 +1,7 @@
 <?php
 $personen = [
     "Gonnie", "Arnoud", "Sander", "jeanise", "Vincent", "Sharon",
-    "Jasper", "David", "Sarah", "Andreas", "Martin",
+    "Jasper", "David", "Sarah", "Andreas", "Angie","Martin",
     "Arnouska", "Marco", "Esther", "Marja", "Henk"
 ];
 $menu = [

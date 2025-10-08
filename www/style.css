@@ -10,43 +10,41 @@
   display: block;
 }
 
-/* Gemeenschappelijke stijl voor navigatieknoppen */
-.navButton {
+/* NAV Knoppen container */
+#navButtons {
   position: fixed;
   top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  z-index: 20;
+}
+
+/* Gemeenschappelijke stijl voor navigatieknoppen */
+.navButton {
+  position: static !important; /* verwijderd fixed position */
   padding: 10px 16px;
-  background-color: #0ac20a;
+  background-color: #012456; /* PowerShell-blauw */
   color: white;
   font-weight: bold;
   font-family: monospace;
   border-radius: 4px;
   text-decoration: none;
   cursor: pointer;
-  z-index: 20;
-  transition: background-color 0.3s ease;
   user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
 }
-
-/* Hover-effect */
 .navButton:hover {
-  background-color: #088d53;
+  background-color: #0341a0;
 }
 
-/* Links en rechts van het horizontale midden, 35px afstand */
-.navButton:first-of-type {
-  left: calc(50% - 35px);
-  transform: translateX(0);
-}
-.navButton:nth-of-type(2) {
-  left: 50%;
-  transform: translateX(-50%);
-}
-.navButton:last-of-type {
-  left: calc(50% + 35px);
-  transform: translateX(0);
-}
-
-/* Scrollende klok tekst die van rechts naar links schuift */
+/* Scrollende klok tekst */
 #scrollingClock {
   position: fixed;
   top: 50%;
@@ -54,7 +52,7 @@
   white-space: nowrap;
   font-size: 58px;
   font-weight: bold;
-  color: rgb(9, 244, 44);
+  color: #012456;
   user-select: none;
   pointer-events: none;
   font-family: monospace;
@@ -65,14 +63,9 @@
   animation-iteration-count: infinite;
   z-index: 5;
 }
-
 @keyframes scrollLeft {
-  0% {
-    left: 100%;
-  }
-  100% {
-    left: -100%;
-  }
+  0% { left: 100%; }
+  100% { left: -100%; }
 }
 
 /* Algemene body en html */
@@ -80,8 +73,8 @@ body {
   margin: 0;
   background-color: black;
   overflow-y: auto;
-  color: #00f;
-  font-family: monospace;
+  color: #012456;
+  font-family: monospace, sans-serif;
 }
 canvas {
   position: fixed;
@@ -109,7 +102,7 @@ html, body {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: rgb(255, 255, 255) !important;
+  color: #fff !important;
   font-family: monospace;
   font-size: 14px;
   user-select: none;
@@ -121,13 +114,13 @@ html, body {
   user-select: none;
 }
 
-/* Visitor counter rechtsonder */
+/* Visitor counter */
 #visitorCounter {
   position: fixed;
   bottom: 10px;
   right: 10px;
   background: rgba(0, 0, 0, 0.6);
-  color: #00f;
+  color: #012456;
   font-family: monospace;
   font-size: 1rem;
   padding: 6px 12px;
@@ -138,7 +131,7 @@ html, body {
   white-space: nowrap;
 }
 
-/* Afbeeldingengalerij container */
+/* Afbeeldingengalerij */
 .gallery {
   margin-top: 70px;
   display: flex;
@@ -147,38 +140,30 @@ html, body {
   justify-content: center;
   z-index: 15;
 }
-
-/* Container rond afbeelding voor tooltip */
 .imgContainer {
   position: relative;
   display: inline-block;
   cursor: pointer;
 }
-
-/* Afbeeldingen thumbnail */
 .imgContainer img {
   max-width: 120px;
   height: auto;
   border-radius: 8px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 0 5px #0ac20a;
+  box-shadow: 0 0 5px #012456;
 }
-
-/* Vergroten afbeelding bij hover */
 .imgContainer:hover img,
 .imgContainer:focus img {
   transform: scale(2);
   z-index: 20;
   position: relative;
-  box-shadow: 0 0 15px #0ac20a;
+  box-shadow: 0 0 15px #012456;
 }
-
-/* Tooltip met afbeeldingnaam, standaard verborgen */
 .imgName {
   visibility: hidden;
   width: max-content;
   background-color: rgba(0, 0, 0, 0.7);
-  color: #0ac20a;
+  color: #012456;
   text-align: center;
   border-radius: 6px;
   padding: 4px 8px;
@@ -187,16 +172,108 @@ html, body {
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
-  box-shadow: 0 0 5px #0ac20a;
+  box-shadow: 0 0 5px #012456;
   font-family: monospace;
   font-size: 14px;
   z-index: 30;
   transition: visibility 0.3s ease;
   user-select: none;
 }
-
-/* Tooltip zichtbaar bij hover of focus */
 .imgContainer:hover .imgName,
 .imgContainer:focus .imgName {
   visibility: visible;
 }
+
+/* Menu table styling met witte lijnen */
+.menuTitle {
+  color: #fff !important;
+  font-size: 1.3em;
+  margin: 0.7em 0 0.7em 0;
+  font-family: monospace, sans-serif;
+  font-weight: bold;
+  text-shadow: 0 1px 8px #012456;
+}
+.responsive-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+.menuTable, .menuTable th, .menuTable td {
+  border: 1px solid #fff !important;
+}
+.menuTable {
+  border-collapse: collapse;
+  background: #232323;
+  width: 100%;
+  min-width: 520px;
+  margin-bottom: 15px;
+}
+.menuTable th {
+  background: #012456;
+  color: #fff;
+  font-size: 1em;
+}
+.menuTable td {
+  background: #232323;
+  color: #fff;
+}
+.menuTable td:first-child {
+  background: #181818 !important;
+  color: #fff !important;
+  font-weight: bold;
+  min-width: 100px;
+}
+.menuTable select {
+  width: 97%;
+  font-size: 1em;
+  border-radius: 5px;
+  border: 1px solid #012456;
+}
+.menuTable button,
+.menuForm button {
+  margin: 12px 0;
+  padding: 10px 20px;
+  background: #012456;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.1em;
+  cursor: pointer;
+}
+.menuTable button:hover,
+.menuForm button:hover {
+  background: #0341a0;
+}
+@media (max-width: 700px) {
+  .menuTable th, .menuTable td {
+    font-size: 0.95em;
+  }
+  .menuTable select {
+    font-size: 0.9em;
+  }
+  #navButtons {
+    gap: 6px;
+  }
+  .navButton {
+    padding: 8px 12px;
+    font-size: 0.9em;
+  }
+}
+@media (max-width: 700px) {
+  body {
+    font-size: 18px; /* Basis tekst iets groter */
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-size: 120%;
+  }
+  input, select, button, textarea {
+    font-size: 16px;
+    min-height: 44px;
+  }
+  /* Eventueel padding/margin toevoegen voor goede ruimtes */
+  body, .responsive-wrap, .menuTable {
+     padding-left: 10px;
+     padding-right: 10px;
+  }
+}
+

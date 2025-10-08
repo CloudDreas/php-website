@@ -2,6 +2,7 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Home</title>
 <link rel="icon" type="image/png" href="images/favicon.png">
 <link rel="stylesheet" href="style.css" />
@@ -18,7 +19,54 @@
     display: block;
   }
 
-  /* Container voor de scrollende datum en tijd */
+  /* Navigatieknoppen container */
+  #navButtons {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    background: rgba(0,0,0,0.6);
+    padding: 5px 10px;
+    border-radius: 12px;
+    z-index: 20;
+    max-width: 90vw;
+    box-sizing: border-box;
+  }
+  .navButton {
+    position: static !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    background-color: #012456;
+    color: white;
+    font-weight: bold;
+    font-family: monospace;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    transition: background-color 0.3s ease;
+  }
+  .navButton:hover {
+    background-color: #0341a0;
+  }
+  @media (max-width: 600px) {
+    #navButtons {
+      max-width: 100vw;
+    }
+    .navButton {
+      padding: 8px 12px;
+      font-size: 0.9em;
+    }
+  }
+
+  /* Scrollende klok */
   #scrollingClock {
     position: fixed;
     top: 50%;
@@ -44,19 +92,13 @@
     white-space: nowrap;
     line-height: 1.2;
   }
-
   #scrollingClock .date,
   #scrollingClock .time {
     display: block;
   }
-
   @keyframes scrollLeft {
-    0% {
-      left: 100%;
-    }
-    100% {
-      left: -100%;
-    }
+    0% { left: 100%; }
+    100% { left: -100%; }
   }
 
   /* Footer styling */
@@ -77,11 +119,14 @@
 </head>
 <body>
 <canvas id="matrix"></canvas>
-<!-- Navigatieknoppen: Menu - Fun - Images -->
+
+<!-- Navigatieknoppen -->
+<div id="navButtons">
   <a href="menu.php" class="navButton">Menu</a>
   <a href="info.php" class="navButton">Info</a>
-
-
+  <a href="images.php" class="navButton">Images</a>
+  <a href="visitor_info.php" class="navButton">Visitor Info</a>
+  </div>
 
 <!-- Scrollende klok met aparte datum en tijd -->
 <div id="scrollingClock">
@@ -106,7 +151,7 @@ function draw() {
   ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = 'rgba(111, 255, 0, 1)';
+  ctx.fillStyle = 'rgba(30, 8, 119, 1)';
   ctx.font = fontSize + 'px monospace';
 
   for(let i = 0; i < drops.length; i++) {
@@ -127,7 +172,7 @@ window.addEventListener('resize', () => {
   canvas.height = window.innerHeight;
 });
 
-// Real-time klok en datum update in twee regels
+// Real-time klok en datum update
 function updateClock() {
   const now = new Date();
   const day = now.getDate().toString().padStart(2, '0');
@@ -150,7 +195,7 @@ setInterval(updateClock, 1000);
   <a href="https://www.linkedin.com/in/andreas-van-waveren-02264860/" target="_blank" title="LinkedIn">
     <img src="images/linkedin-icon.svg" alt="LinkedIn" id="linkedinIcon" />
   </a>
-  <span id="footerText">Andreas-2025 &#8482 - On docker01</span>
+  <span id="footerText">Andreas-2025 &#8482; - On docker01</span>
 </footer>
 </body>
 </html>
