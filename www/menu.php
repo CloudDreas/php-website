@@ -218,7 +218,7 @@
   </script>
 
   <footer id="footer">
-    <span id="footerText">by Andreas &amp; Gonnie &#169;</span>
+    <span id="footerText">by Andreas1 &amp; Gonnie &#169;</span>
   </footer>
 </body>
 </html>
