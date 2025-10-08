@@ -15,7 +15,7 @@
   position: fixed;
   top: 10px;
   padding: 10px 16px;
-  background-color: #0ac23b;
+  background-color: #0ac20a;
   color: white;
   font-weight: bold;
   font-family: monospace;
@@ -34,15 +34,15 @@
 
 /* Links en rechts van het horizontale midden, 35px afstand */
 .navButton:first-of-type {
-  left: calc(50% - 35px); /* 35px links van midden */
+  left: calc(50% - 35px);
   transform: translateX(0);
 }
 .navButton:nth-of-type(2) {
-  left: 50%; /* precies midden */
+  left: 50%;
   transform: translateX(-50%);
 }
 .navButton:last-of-type {
-  left: calc(50% + 35px); /* 35px rechts van midden */
+  left: calc(50% + 35px);
   transform: translateX(0);
 }
 
@@ -136,4 +136,67 @@ html, body {
   user-select: none;
   pointer-events: none;
   white-space: nowrap;
+}
+
+/* Afbeeldingengalerij container */
+.gallery {
+  margin-top: 70px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  z-index: 15;
+}
+
+/* Container rond afbeelding voor tooltip */
+.imgContainer {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+/* Afbeeldingen thumbnail */
+.imgContainer img {
+  max-width: 120px;
+  height: auto;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 5px #0ac20a;
+}
+
+/* Vergroten afbeelding bij hover */
+.imgContainer:hover img,
+.imgContainer:focus img {
+  transform: scale(2);
+  z-index: 20;
+  position: relative;
+  box-shadow: 0 0 15px #0ac20a;
+}
+
+/* Tooltip met afbeeldingnaam, standaard verborgen */
+.imgName {
+  visibility: hidden;
+  width: max-content;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #0ac20a;
+  text-align: center;
+  border-radius: 6px;
+  padding: 4px 8px;
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  box-shadow: 0 0 5px #0ac20a;
+  font-family: monospace;
+  font-size: 14px;
+  z-index: 30;
+  transition: visibility 0.3s ease;
+  user-select: none;
+}
+
+/* Tooltip zichtbaar bij hover of focus */
+.imgContainer:hover .imgName,
+.imgContainer:focus .imgName {
+  visibility: visible;
 }
